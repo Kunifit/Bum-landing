@@ -1,12 +1,14 @@
-const ctaLinks = document.querySelectorAll("[data-cta-location]");
+const ctaLinks = document.querySelectorAll(
+  '[data-event-name="free_trial_cta_click"][data-cta-location]',
+);
 
 ctaLinks.forEach((ctaLink) => {
   ctaLink.addEventListener("click", () => {
-    const eventName = ctaLink.dataset.eventName || "free_trial_cta_click";
+    if (typeof window.gtag !== "function") {
+      return;
+    }
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: eventName,
+    window.gtag("event", "free_trial_cta_click", {
       cta_location: ctaLink.dataset.ctaLocation,
     });
   });
